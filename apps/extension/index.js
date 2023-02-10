@@ -1,16 +1,23 @@
-let sum = 0;
+let sum = [];
 chrome.runtime.onConnect.addListener(function (devToolsConnection) {
   // assign the listener function to a variable so we can remove it later
-  console.log("conneted");
   var devToolsListener = function (message, sender, sendResponse) {
     // Inject a content script into the identified tab
-    console.log(message);
-    if(message.data){
-        sum+=message.data.request.bodySize + message.data.response.content.size
-        console.log(sum);
-    }
+    sum.find(d => {
+        if(d.tabId === message.tabId){
+            d.sum += message.data.request.bodySize + message.data.response.content.size
+            const reg = message.data._initiator.url.match(/http?s:\/\/[A-Za-z0-9.]*/);
+            d.url = reg;
+            console.log(d);
+        }
+    })
     if(message.scriptToInject !== undefined){
         devToolsConnection.postMessage({'tabId':message.tabId})
+        sum.push({
+            tabId: message.tabId,
+            url: "",
+            sum: 0
+        })
     }
   };
   // add the listener
@@ -20,4 +27,3 @@ chrome.runtime.onConnect.addListener(function (devToolsConnection) {
     devToolsConnection.onMessage.removeListener(devToolsListener);
   });
 });
-console.log("manav");
