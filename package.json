@@ -1,0 +1,19 @@
+{
+  "name": "trinit_c41_dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manavagr1108/TRINIT_C41_DEV.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manavagr1108/TRINIT_C41_DEV/issues"
+  },
+  "homepage": "https://github.com/manavagr1108/TRINIT_C41_DEV#readme"
+}
