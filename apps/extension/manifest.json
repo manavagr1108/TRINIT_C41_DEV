@@ -1,14 +1,15 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Extension",
   "version": "1.0.0",
   "description": "Caculate FootPrint",
   "icons": {},
   "minimum_chrome_version": "69.0",
   "background": {
-    "scripts": ["background_scripts/main.js"]
+    "service_worker": "index.js",
+    "type": "module"
   },
-  "permissions": [],
+  "permissions": [ "tabs", "activeTab", "scripting"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
@@ -21,7 +22,5 @@
       "all_frames": true
     }
   ],
-  "browser_action": {
-    "default_popup": "pages/index.html"
-  }
+  "devtools_page": "devtools.html"
 }
