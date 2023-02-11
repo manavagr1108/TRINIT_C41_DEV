@@ -3,7 +3,12 @@ import getGoogleUrl from './utils/getGoogleUrl';
 import { ChakraProvider } from '@chakra-ui/react'
 import { Button } from "@chakra-ui/react";
 import axios from "axios";
+import Charts from './comps/Charts/Charts';
+import { useState } from 'react';
+
 function App() {
+  const [usageData, setUsageData] = useState( [] );
+
   const handleLoginGoogle = (e) => {
     e.preventDefault();
     const url = getGoogleUrl();
@@ -14,7 +19,7 @@ function App() {
     const data = await axios.get(
       `${REACT_APP_BACKEND_URI}/getAllUrls`
     );
-    console.log(data);
+    setUsageData( data.data.data );
   }
   return (
     <div className="App">
@@ -43,6 +48,7 @@ function App() {
           GetDetails
         </Button>
 
+        <Charts data={usageData} />
       </ChakraProvider>
     </div>
   );
