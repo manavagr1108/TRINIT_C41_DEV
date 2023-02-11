@@ -9,15 +9,31 @@
     "service_worker": "index.js",
     "type": "module"
   },
-  "permissions": [ "tabs", "activeTab", "scripting"],
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://localhost:4000/*"
+  ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content_scripts/content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content_scripts/content.js"
+      ]
     },
     {
-      "matches": ["file:///", "file:///*/"],
-      "css": ["content_scripts/index.css"],
+      "matches": [
+        "file:///",
+        "file:///*/"
+      ],
+      "css": [
+        "content_scripts/index.css"
+      ],
       "run_at": "document_start",
       "all_frames": true
     }
