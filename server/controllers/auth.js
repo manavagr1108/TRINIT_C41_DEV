@@ -1,4 +1,5 @@
 import User from "../models/userSchema.js";
+import DataSchema from "../models/storeData.js";
 import logger from "../server.js";
 import jwt from 'jsonwebtoken';
 import { getGoogleOauthToken, getGoogleUser } from "../utils/auth.util.js";
@@ -24,7 +25,7 @@ const getDetailsGoogle = async (req, res) => {
         return res.redirect(`${process.env.FRONTEND_URL}`);
     } catch (err) {
         logger.error(err, "Failed to authorize Google user");
-        return res.json({message:"Error"});
+        return res.json({ message: "Error" });
     }
 }
 
@@ -38,5 +39,46 @@ const loggedIn = async (req, res) => {
         return res.json(false);
     }
 }
+const storeDataGlobal = async (req, res) => {
+    try {
+        const tabId = req.body.tabId;
+        const sum = req.body.sum;
+        let index = -1;
+        for (let i = 0; i < sum.length; i++) {
+            if (tabId == sum[i].tabId) {
+                index = i;
+                break;
+            }
+        }
 
-export { loggedIn, getDetailsGoogle };
+        if (index != -1) {
+            console.log(typeof (sum[index].sum), sum[index].sum)
+            const currentPage = await DataSchema.findOne({ url: sum[index].url[0] });
+            if (!currentPage) {
+                const newEntry = await DataSchema.create({
+                    url: sum[index].url[0],
+                    dataSent: sum[index].sum
+                });
+                await newEntry.save();
+                return res.send.json({ message: "Successfully updated" });
+            }
+            const currentSum = currentPage.dataSent;
+            await DataSchema.updateOne({ url: sum[index].url[0] }, { dataSent: currentSum + sum[index].sum });
+            return res.json({ message: "Updated successfully" });
+        }
+
+        return res.json({ message: "Invalid Data" });
+    } catch (err) {
+        return res.status(404).json({ message: "Failed" });
+    }
+}
+
+const getAllDetails = async (req, res) => {
+    try {
+        const getAllUrls = await DataSchema.find({});
+        return res.json({ data: getAllUrls });
+    } catch {
+        return res.status(404).json({ message: "Failed" });
+    }
+}
+export { loggedIn, getDetailsGoogle, storeDataGlobal, getAllDetails };

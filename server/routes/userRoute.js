@@ -1,11 +1,9 @@
 import express from "express";
 const router = express.Router();
-import {getDetailsGoogle,loggedIn } from "../controllers/auth.js";
+import {getAllDetails, getDetailsGoogle,loggedIn,storeDataGlobal } from "../controllers/auth.js";
 
 router.get('/google/callback',getDetailsGoogle);
 router.get('/loggedIn',loggedIn);
-router.get('/hello',()=>{
-    console.log("Hiii");
-    return 0;
-})
+router.post('/storeData',storeDataGlobal)
+router.get('/getAllUrls',getAllDetails);
 export default router;
