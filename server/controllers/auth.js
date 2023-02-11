@@ -21,8 +21,7 @@ const getDetailsGoogle = async (req, res) => {
             secure: true,
             sameSite: "none",
         });
-        console.log(user)
-        return res.redirect(`${process.env.FRONTEND_URL}`);
+        return res.redirect(`${process.env.FRONTEND_URL}/profile`);
     } catch (err) {
         logger.error(err, "Failed to authorize Google user");
         return res.json({ message: "Error" });
@@ -81,4 +80,17 @@ const getAllDetails = async (req, res) => {
         return res.status(404).json({ message: "Failed" });
     }
 }
-export { loggedIn, getDetailsGoogle, storeDataGlobal, getAllDetails };
+
+const logout= (req,res)=>{
+    try{
+        res.cookie('token',"",{
+            maxAge:1,
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",});
+        return res.send();
+    }catch{
+        return res.send();
+    }
+}
+export { loggedIn, getDetailsGoogle, storeDataGlobal, getAllDetails,logout };

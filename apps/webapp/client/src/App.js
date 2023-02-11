@@ -1,56 +1,25 @@
-import './App.css';
-import getGoogleUrl from './utils/getGoogleUrl';
-import { ChakraProvider } from '@chakra-ui/react'
-import { Button } from "@chakra-ui/react";
-import axios from "axios";
-import Charts from './comps/Charts/Charts';
-import { useState } from 'react';
-
+import "./App.css";
+// import getGoogleUrl from "./utils/getGoogleUrl";
+// import { ChakraProvider } from "@chakra-ui/react";
+// import { Button } from "@chakra-ui/react";
+// import axios from "axios";
+import Charts from "./comps/Charts/Charts";
+import Router from "./Routes";
+import { useContext, useState } from "react";
+import AuthContext from "./Context/Context.js";
+import { Routes, BrowserRouter, Route, Navigate } from "react-router-dom";
+import Login from "./comps/Login/Login";
+import { AuthContextProvider } from "./Context/Context.js";
 function App() {
-  const [usageData, setUsageData] = useState( [] );
+  // const { loggedIn } = useContext(AuthContext);
+  const [usageData, setUsageData] = useState([]);
 
-  const handleLoginGoogle = (e) => {
-    e.preventDefault();
-    const url = getGoogleUrl();
-    window.location.replace(url);
-  }
-  const { REACT_APP_BACKEND_URI } = process.env;
-  const handlerequest = async () => {
-    const data = await axios.get(
-      `${REACT_APP_BACKEND_URI}/getAllUrls`
-    );
-    setUsageData( data.data.data );
-  }
   return (
-    <div className="App">
-      <ChakraProvider>
-        <Button
-          m={'1% 0'}
-          variant={'solid'}
-          color={'white'}
-          bg={'blue'}
-          colorScheme={'blue'}
-          type={'button'}
-          onClick={handleLoginGoogle}
-        >
-          Login With Google
-        </Button>
-        {/* <ChakraProvider> */}
-        <Button
-          m={'1% 0'}
-          variant={'solid'}
-          color={'white'}
-          bg={'blue'}
-          colorScheme={'blue'}
-          type={'button'}
-          onClick={handlerequest}
-        >
-          GetDetails
-        </Button>
-
-        <Charts data={usageData} />
-      </ChakraProvider>
-    </div>
+    <>
+      <AuthContextProvider>
+        <Router/>
+      </AuthContextProvider>
+    </>
   );
 }
 
